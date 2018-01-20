@@ -1,0 +1,44 @@
+import pandas as pd
+#import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+#standard unit as N, m, s, m/s2 etc.
+s1=[0,43.8,1615.3846]  #[nothing,initial force,spring index],s1 for sring1
+s2=[0,31.5000,922.6190] #[nothing,initial force,spring index],s2 for spring2
+m=[0,0.1,0.03]  #[nothing,m1 of pedal plate,m2 of friction lever]
+M=[0,0.0280,0.0450,0.0987,0.1540,0.0750]#moment for different position,M[0]=0 is used for ocuppy the position
+a1=(M[1]*s1[1]+M[2]*s2[1])*1.0/(M[3]*(m[1]+m[2])) # linear accel. of position at 154mm where the pedal and lever contact
+a2=a1*1.0/M[4]#agular accel. of pedal 
+a3=a1*1.0/M[5]#agular accel. of lever 
+w1=0#agular velovity of pedal plate
+w2=0#agular velovity of friction lever
+dt=0.0001# unit 's'
+Ang=0 #tarvel angle of pedal plate
+v=[] #used for collecting the v record
+time=[] # used for collecting the time record
+Angle=[] #used for collecting the Angle record
+for i in range(1,300):# 3000 cycle as time 0.3s, i from 1 to 299,
+    s1[1]=s1[1]-w2*dt*M[1]*s1[2]#update spring1 force
+    s2[1]=s2[1]-w2*dt*M[2]*s2[2]#update spring2 force
+    
+    v1=w1*M[4] # linear velocity of pedal late at postion 154mm
+    Ang= Ang+w1*dt*180.0/3.14 # travelled angle of pedal plate,covert the unit from 'rad/s' to 'deg'
+
+    v.append(v1)
+    time.append(i*dt)
+    Angle.append(Ang)
+    if Ang>=14.58:          #set the travel limit as 14.58 degree.
+        print ('time=',i*dt,
+              'v=',v1,
+              'Angle=',Ang) # check the timecost , the velocity
+        break
+    
+    w1=w1+a2*dt #update angular velocity
+    w2=w2+a3*dt #update angular velocity
+    
+    a1=(M[1]*s1[1]+M[2]*s2[1])*1.0/(M[3]*(m[1]+m[2]))
+    a2=a1*1.0/M[4] #after dt,update agular accel. of pedal 
+    a3=a1*1.0/M[5] #after dt,update agular accel. of lever 
+   
+plt.plot(Angle,v)
+plt.show()
+
