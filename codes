@@ -1,5 +1,5 @@
 import pandas as pd
-#import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib import pyplot as plt
 #standard unit as N, m, s, m/s2 etc.
 s1=[0,43.8,1615.3846]  #[nothing,initial force,spring index],s1 for sring1
@@ -21,7 +21,7 @@ for i in range(1,300):# 3000 cycle as time 0.3s, i from 1 to 299,
     s2[1]=s2[1]-w2*dt*M[2]*s2[2]#update spring2 force
     
     v1=w1*M[4] # linear velocity of pedal late at postion 154mm
-    Ang= Ang+w1*dt*180.0/3.14 # travelled angle of pedal plate,covert the unit from 'rad/s' to 'deg'
+    Ang= Ang+w1*dt*180.0/np.pi # travelled angle of pedal plate,covert the unit from 'rad/s' to 'deg'
 
     v.append(v1)
     time.append(i*dt)
@@ -38,8 +38,17 @@ for i in range(1,300):# 3000 cycle as time 0.3s, i from 1 to 299,
     a1=(M[1]*s1[1]+M[2]*s2[1])*1.0/(M[3]*(m[1]+m[2]))
     a2=a1*1.0/M[4] #after dt,update agular accel. of pedal 
     a3=a1*1.0/M[5] #after dt,update agular accel. of lever 
-plt.plot(time,v,label='Velcity_pedal')
-plt.twinx()
-plt.plot(time,Angle,label='tarveled angle')
+    
+plt.plot(time,v,linewidth=2.5,color='red',label='Velcity_pedal') #draw the time-v graph
+plt.ylabel('velocity-m/s') #label
+plt.xlabel('time-s') #label
+plt.legend(loc=2) #place the legend upper left
+
+plt.twinx() #create the second Y-axis,sharing the same X-axis
+plt.plot(time,Angle,linewidth=2.5,color='blue',label='tarveled angle') #drawing the time-angle graph
+plt.ylabel('travled angle-degree') # label 
+plt.legend(loc=4) #place the legend lower right
+plt.title('time-elocity&angle') #create the graph title
+
 plt.show()
 
