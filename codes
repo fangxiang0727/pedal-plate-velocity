@@ -38,8 +38,17 @@ for i in range(1,300):# 3000 cycle as time 0.3s, i from 1 to 299,
     a1=(M[1]*s1[1]+M[2]*s2[1])*1.0/(M[3]*(m[1]+m[2]))
     a2=a1*1.0/M[4] #after dt,update agular accel. of pedal 
     a3=a1*1.0/M[5] #after dt,update agular accel. of lever 
-plt.plot(time,v,label='Velcity_pedal')
-plt.twinx()
-plt.plot(time,Angle,label='tarveled angle')
+    
+plt.plot(time,v,linewidth=2.5,color='red',label='Velcity_pedal') #draw the time-v graph
+plt.ylabel('velocity-m/s') #label
+plt.xlabel('time-s') #label
+plt.legend(loc=1) #place the legend upper left
+
+plt.twinx() #create the second Y-axis,sharing the same X-axis
+plt.plot(time,Angle,linewidth=2.5,color='blue',label='tarveled angle') #drawing the time-angle graph
+plt.ylabel('travled angle-degree') # label 
+plt.legend(loc=2) #place the legend lower right
+plt.title('time-velocity&angle') #create the graph title
+
 plt.show()
 
